@@ -61,7 +61,7 @@ mkdir -p "$OUTDIR/rootfs/home/conf"
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
 then
-git clone git://busybox.net/busybox.git
+git clone https://git.busybox.net/busybox
     cd busybox
     git checkout ${BUSYBOX_VERSION}
     # TODO:  Configure busybox
