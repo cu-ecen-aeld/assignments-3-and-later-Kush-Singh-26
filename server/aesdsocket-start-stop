@@ -1,0 +1,42 @@
+#!/bin/sh
+
+DAEMON="/usr/bin/aesdsocket"
+DAEMON_ARGS="-d"
+PIDFILE="/var/run/aesdsocket.pid"
+LOGFILE="/var/log/aesdsocket.log"
+
+case "$1" in
+    start)
+        echo "Starting aesdsocket"
+        start-stop-daemon -S -b -m -p "$PIDFILE" -x "$DAEMON" -- $DAEMON_ARGS
+        rc=$?
+        if [ $rc -eq 0 ]; then
+            echo "aesdsocket started"
+        else
+            echo "Failed to start aesdsocket"
+        fi
+        exit $rc
+        ;;
+    stop)
+        echo "Stopping aesdsocket"
+        start-stop-daemon -K -s SIGTERM -p "$PIDFILE" -x "$DAEMON"
+        rc=$?
+        if [ $rc -eq 0 ]; then
+            echo "aesdsocket stopped"
+        else
+            echo "Failed to stop aesdsocket"
+        fi
+        exit $rc
+        ;;
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
